@@ -14,7 +14,12 @@ password = getpass.getpass('CGV 비밀번호를 입력해주세요. : ')
 driver = webdriver.Chrome()
 count = 0 # 반복 횟수
 login_url = 'https://m.cgv.co.kr/WebAPP/Member/Login.aspx?RedirectURL=http%3a%2f%2fm.cgv.co.kr%2fWebApp%2fMyCgvV5%2fmyMain.aspx'
-url = "https://m.cgv.co.kr/WebApp/Reservation/QuickResult.aspx?mc=&mgc=20037139&tc=0266&ymd=&rt=MOVIE&fst=&fet=&fsrc=&fmac="
+
+# ============================================================
+
+url = "https://m.cgv.co.kr/WebApp/Reservation/QuickResult.aspx?mc=&mgc=20037139&tc=0266&ymd=&rt=MOVIE&fst=&fet=&fsrc=&fmac=" ## CGV 모바일 웹 기반
+
+# ============================================================
 
 driver.get(login_url)
 driver.refresh()
