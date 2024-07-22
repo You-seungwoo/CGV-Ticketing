@@ -59,7 +59,7 @@ def main():
     driver.refresh()
 
     while True:
-        time.sleep(0.5)
+        time.sleep(3)
         wait = WebDriverWait(driver, 1)
         try:
             Time_button = WebDriverWait(driver, 1).until(EC.presence_of_all_elements_located((By.CLASS_NAME, f'btn_miniMap')))
