@@ -17,7 +17,7 @@ login_url = 'https://m.cgv.co.kr/WebAPP/Member/Login.aspx?RedirectURL=http%3a%2f
 
 # ============================================================
 
-url = "https://m.cgv.co.kr/WebApp/Reservation/QuickResult.aspx?mc=&mgc=20037139&tc=0266&ymd=&rt=MOVIE&fst=&fet=&fsrc=&fmac=" ## CGV 모바일 웹 기반
+url = "https://m.cgv.co.kr/" ## CGV 모바일 웹 기반
 
 # ============================================================
 
