@@ -72,7 +72,7 @@ def main():
             except:
                 WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="screeningSchedule_time_list"]/li[1]/a/span[1]'))).click()
                 
-            print(f'\r[info] 취소표 대기 중.. {count}번째 새로고침', end='')
+            print(f'\r[info] 여분 표 탐색 중.. {count}번째 새로고침', end='')
             found = False
             pass
         
