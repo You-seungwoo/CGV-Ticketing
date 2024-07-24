@@ -72,10 +72,16 @@ driver.execute_script(movie_table[int(input('예매하고 싶은 영화의 번�
 
 ## ============= 영화 지역 선택 =================
 
+try:
+    region_button_Table = WebDriverWait(driver,1).until(EC.presence_of_element_located((By.CLASS_NAME, 'popArea_list'))).find_elements(By.TAG_NAME, 'li')
+except:
+    driver.refresh()
+    region_button_Table = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CLASS_NAME, 'popArea_list'))).find_elements(By.TAG_NAME, 'li')
+
 region_table = []
 k = 0
 print('\n','='*40,'\n')
-for i in WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CLASS_NAME, 'popArea_list'))).find_elements(By.TAG_NAME, 'li'):
+for i in region_button_Table:
     if i.get_attribute('style') == 'display: block;':
         
         region_button = i.find_element(By.TAG_NAME, 'a')
@@ -148,7 +154,7 @@ people_count = 1
 def people_number():
     global people_count
     people_count = int(input('예매하고 싶은 인원을 입력하세요. : '))
-    if people_count > 4:
+    if people_count > 9999:
         print('\n 예매 인원은 최대 3명입니다.')
         people_count = 1
         people_number()
@@ -159,7 +165,7 @@ print('\n','='*40,'\n')
 ## ============= 메인 함수 =================
 
 #2024-07-23 장애인 석 예매 안되도록 수정할 것 -수정함
-
+#2024-07-24 여분 좌석 < people_count 일때 오류 발생함 -> 나중에 해결
 def main():
     try:
         driver.get(url)
@@ -167,16 +173,17 @@ def main():
         raise Exception("[Error] 비밀번호 또는 아이디가 일치하지 않습니다. 다시 시도해주세요.")
 
     while True:
+        global count
         time.sleep(cooltime)
         wait = WebDriverWait(driver, 2)
         try:
             Time_button = WebDriverWait(driver, 1).until(EC.presence_of_all_elements_located((By.CLASS_NAME, f'btn_miniMap')))
+            
             found = True
         except:
 
             ## ============= 여분 표 탐색 =================
 
-            global count 
             count += 1
             try: 
                 driver.execute_script(Day_table[day_number][1]) # 유저가 설정 한 날짜의 버튼을 누르면 자동으로 불러오기 되는 것 이용ㅇ
@@ -185,12 +192,23 @@ def main():
                 
             print(f'\r[info] 여분 표 탐색 중.. {count}번째 새로고침', end='')
             found = False
-            pass
+            continue
             
             ## ============= 여분 표 확보시 (found True) ================= 
 
         if found:
             for button in Time_button:
+                if int(WebDriverWait(button,3).until(EC.presence_of_element_located((By.TAG_NAME, 'span'))).text) < people_count:
+                    count += 1
+                    try: 
+                        driver.execute_script(Day_table[day_number][1]) # 유저가 설정 한 날짜의 버튼을 누르면 자동으로 불러오기 되는 것 이용ㅇ
+                    except:
+                        time.sleep(2)
+                
+                    print(f'\r[info] 여분 표 탐색 중.. {count}번째 새로고침', end='')
+                    found = False
+                    continue
+
                 if button.is_enabled() == True: 
                     print(f'\n[info] 여분 티켓을 찾았습니다!')
                     try_time = time.time() # 실행시간 
@@ -249,8 +267,6 @@ def main():
                             try:
                                 clicked_seat.append(msg)
                                 driver.execute_script(f'jQuery(\'#seat_table td[seatname="{i.get_attribute("seatname")}"]\').click();')
-                                print(clicked_seat)
-                                print(len(clicked_seat))
                                 if len(clicked_seat) < people_count: ## 클릭 된 좌석이 예매할 수보다 적으면 고의로 오류를 날려서 한번 더 반복하게 함
                                     raise Exception
 
