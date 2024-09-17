@@ -12,7 +12,8 @@ response = openai.ChatCompletion.create(
 )
 
 user_content = response['choices'][0]['message']['content']
-rere_prompt = f"주어진 자료가 부적절하면 ‘False’, 적절하다고 생각하면 ’True’를 반환해줘. 생성물: {user_content}"
+rere_prompt = f"""주어진 자료가 부적절하면 ‘False’, 
+적절하다고 생각하면 ’True’를 반환해줘. 생성물: {user_content}"""
 
 rere_response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
